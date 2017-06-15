@@ -4,7 +4,7 @@ RUN addgroup -S elasticsearch && adduser -S -G elasticsearch elasticsearch
 
 RUN apk add --no-cache supervisor openssl bash 'su-exec>=0.2'
 
-ENV ELASTICSEARCH_AND_KIBANA_VERSION 5.2.2
+ENV ELASTICSEARCH_AND_KIBANA_VERSION 5.4.0
 ENV ELASTICSEARCH_PATH /usr/share/elasticsearch
 ENV KIBANA_PATH /usr/share/kibana
 
@@ -13,7 +13,7 @@ RUN cd /tmp && \
       tar -xzf elasticsearch-$ELASTICSEARCH_AND_KIBANA_VERSION.tar.gz && \
       rm -rf elasticsearch-$ELASTICSEARCH_AND_KIBANA_VERSION.tar.gz && \
       mv /tmp/elasticsearch-$ELASTICSEARCH_AND_KIBANA_VERSION $ELASTICSEARCH_PATH && \
-      echo "network.host: 0.0.0.0" >> $ELASTICSEARCH_PATH/config/elasticsearch.yml && \
+      echo "http.host: 0.0.0.0" >> $ELASTICSEARCH_PATH/config/elasticsearch.yml && \
       chown -R elasticsearch:elasticsearch $ELASTICSEARCH_PATH
 
 
