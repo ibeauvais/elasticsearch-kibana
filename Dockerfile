@@ -1,10 +1,10 @@
-FROM openjdk:8-jre-alpine
+FROM openjdk:10-jre-slim
 
-RUN addgroup -S elasticsearch && adduser -S -G elasticsearch elasticsearch
+RUN addgroup -q elasticsearch && useradd  -g elasticsearch elasticsearch
+RUN apt-get update
+RUN apt-get -y install supervisor openssl bash wget
 
-RUN apk add --no-cache supervisor openssl bash 'su-exec>=0.2'
-
-ENV ELASTICSEARCH_AND_KIBANA_VERSION 5.4.0
+ENV ELASTICSEARCH_AND_KIBANA_VERSION 6.3.1
 ENV ELASTICSEARCH_PATH /usr/share/elasticsearch
 ENV KIBANA_PATH /usr/share/kibana
 
@@ -25,7 +25,7 @@ RUN mkdir $ELASTICSEARCH_PATH/data && \
 
 
 RUN \
-  apk add --update --repository http://dl-3.alpinelinux.org/alpine/edge/main/ --allow-untrusted nodejs &&\
+   apt-get -y install nodejs &&\
   cd /tmp && \
   wget https://artifacts.elastic.co/downloads/kibana/kibana-$ELASTICSEARCH_AND_KIBANA_VERSION-linux-x86_64.tar.gz
 
@@ -43,5 +43,5 @@ VOLUME $ELASTICSEARCH_PATH/data
 
 
 EXPOSE 9200 9300 5601
-
+USER elasticsearch
 CMD ["/usr/bin/supervisord"]
