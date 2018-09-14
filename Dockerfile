@@ -1,10 +1,10 @@
-FROM openjdk:10-jre-slim
+FROM openjdk:10.0.2-13-jre-slim
 
 RUN addgroup -q elasticsearch && useradd  -g elasticsearch elasticsearch
 RUN apt-get update
 RUN apt-get -y install supervisor openssl bash wget
 
-ENV ELASTICSEARCH_AND_KIBANA_VERSION 6.3.1
+ENV ELASTICSEARCH_AND_KIBANA_VERSION 6.3.2
 ENV ELASTICSEARCH_PATH /usr/share/elasticsearch
 ENV KIBANA_PATH /usr/share/kibana
 
@@ -22,7 +22,6 @@ WORKDIR $ELASTICSEARCH_PATH
 RUN bin/elasticsearch --version
 RUN mkdir $ELASTICSEARCH_PATH/data && \
     chown -R elasticsearch:elasticsearch $ELASTICSEARCH_PATH/data
-
 
 RUN \
    apt-get -y install nodejs &&\
